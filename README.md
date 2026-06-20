@@ -1,16 +1,16 @@
 AI Claim Assessment Tool
 
-This project is an AI-based fact-checking and claim assessment system.
+An AI-powered document assessment and fact-checking application built with Streamlit, Gemini, and Tavily.
 
-It allows users to upload a PDF, extract the main fact-checkable claims, verify them using web evidence, and generate an assessment report.
+The application extracts the most important claims from a PDF document, searches for supporting evidence on the web, and evaluates each claim using AI-assisted fact-checking.
 
 Features
 Upload PDF documents
-Extract primary claims from document text
-Avoid extracting every minor fact or supporting detail
-Search web evidence using Tavily
-Verify claims using Gemini
-Classify claims as:
+Extract primary fact-checkable claims
+Ignore minor supporting details and background information
+Search evidence using Tavily Search API
+Verify claims using Google Gemini
+Classify claims into:
 True
 False
 Misleading
@@ -18,57 +18,99 @@ Outdated
 Opinion
 Mixed
 Unverifiable
-Display final report in Streamlit
-Export results as CSV
+Display verification confidence and reasoning
+Export assessment results as CSV
+Streamlit web interface
+Technology Stack
+Python
+Streamlit
+Google Gemini API
+Tavily Search API
+PyMuPDF
+Pandas
 Project Structure
 FactCheck/
-│-- app.py
-│-- llm.py
-│-- tavily_service.py
-│-- requirements.txt
-│-- .env
-│-- README.md
+│
+├── app.py
+├── llm.py
+├── tavily_service.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+└── .env
 Installation
-python -m pip install -r requirements.txt
+
+Clone the repository:
+
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+cd YOUR_REPOSITORY
+
+Install dependencies:
+
+pip install -r requirements.txt
 Environment Variables
 
 Create a .env file:
 
 GEMINI_API_KEY=your_gemini_api_key
 TAVILY_API_KEY=your_tavily_api_key
+
 GEMINI_MODEL=gemini-2.5-flash
 GEMINI_FALLBACK_MODEL=gemini-2.0-flash
-Run the App
+Running Locally
+
+Start the application:
+
 streamlit run app.py
-How It Works
+
+The application will be available at:
+
+http://localhost:8501
+Workflow
 PDF Upload
-↓
-Extract Text
-↓
-Gemini extracts primary claims
-↓
-Tavily searches web evidence
-↓
-Gemini verifies each claim
-↓
-Final assessment report is generated
-Claim Extraction Logic
-
-The system does not extract every factual sentence.
-
-It extracts only important claims that are central to the document's meaning, conclusion, findings, recommendations, or main message.
-
+     ↓
+Text Extraction
+     ↓
+Claim Extraction (Gemini)
+     ↓
+Evidence Search (Tavily)
+     ↓
+Claim Verification (Gemini)
+     ↓
+Assessment Report
 Verification Categories
-Status	Meaning
-True	Evidence supports the claim
+Category	Description
+True	Evidence strongly supports the claim
 False	Evidence contradicts the claim
-Misleading	Claim has some truth but misses important context
-Outdated	Claim was once true but is no longer current
-Opinion	Claim is subjective or preference-based
-Mixed	Some parts are true and some are false or uncertain
-Unverifiable	Evidence is insufficient
-Notes
+Misleading	Claim contains partial truth but lacks context
+Outdated	Claim was previously accurate but is no longer current
+Opinion	Subjective statement that cannot be objectively verified
+Mixed	Some parts supported and some contradicted
+Unverifiable	Insufficient evidence available
+Example Output
+Claim	Status	Confidence
+The Earth revolves around the Sun once every 365 days.	True	98%
+Pluto is the ninth planet in the Solar System.	Outdated	95%
+The Great Wall of China is visible from the Moon.	False	97%
+Deployment
+Streamlit Community Cloud
+Push the project to GitHub.
+Open Streamlit Community Cloud.
+Create a new app.
+Connect your GitHub repository.
+Set app.py as the entry point.
+Add API keys in Streamlit Secrets:
+GEMINI_API_KEY = "your_gemini_api_key"
+TAVILY_API_KEY = "your_tavily_api_key"
+Deploy.
+Future Improvements
+PDF report export
+Batch claim verification
+Multi-language support
+Citation scoring
+Claim severity analysis
+Source credibility scoring
+Dashboard analytics
+Disclaimer
 
-Gemini free tier may have request limits. If you receive a 429 RESOURCE_EXHAUSTED error, wait and retry, reduce the number of claims, or enable billing.
-
-For better efficiency, verify claims in batches instead of sending one Gemini request per claim.
+This tool provides AI-assisted fact-checking and should be used as a decision-support system. Human review is recommended for critical assessments.
