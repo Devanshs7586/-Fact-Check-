@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from tavily import TavilyClient
-
+import streamlit as st
 load_dotenv()
 
 TAVILY_API_KEY = st.secrets.get(
