@@ -8,7 +8,6 @@ from tav import search_evidence
 
 st.set_page_config(
     page_title="AI Claim Assessment Tool",
-    page_icon="✅",
     layout="wide"
 )
 
