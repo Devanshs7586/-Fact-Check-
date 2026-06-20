@@ -4,10 +4,13 @@ import re
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-
+import streamlit as st
 load_dotenv()
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = st.secrets.get(
+    "GEMINI_API_KEY",
+    os.getenv("GEMINI_API_KEY")
+)
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 client = genai.Client(api_key=GEMINI_API_KEY)

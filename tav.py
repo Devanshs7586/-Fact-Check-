@@ -4,7 +4,10 @@ from tavily import TavilyClient
 
 load_dotenv()
 
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+TAVILY_API_KEY = st.secrets.get(
+    "TAVILY_API_KEY",
+    os.getenv("TAVILY_API_KEY")
+)
 
 tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
 
