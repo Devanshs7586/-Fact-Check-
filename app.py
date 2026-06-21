@@ -24,7 +24,7 @@ def extract_text_from_pdf(uploaded_file):
 
 
 st.title("AI Claim Assessment Tool")
-st.write("Upload a PDF, extract primary claims, and verify them using Gemini + Tavily.")
+st.write("Upload a PDF, extract primary claims, and verify them usi ng Gemini + Tavily.")
 
 uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
 
@@ -87,6 +87,50 @@ if "verified_results" in st.session_state:
     st.subheader("Final Assessment Report")
 
     df = pd.DataFrame(st.session_state["verified_results"])
+
+    # -----------------------------
+    # Summary counts
+    # -----------------------------
+    total_claims = len(df)
+
+    status_counts = df["Status"].value_counts().to_dict()
+
+    summary_data = {
+        "Total Claims": total_claims,
+        "True": status_counts.get("True", 0),
+        "False": status_counts.get("False", 0),
+        "Misleading": status_counts.get("Misleading", 0),
+        "Outdated": status_counts.get("Outdated", 0),
+        "Opinion": status_counts.get("Opinion", 0),
+        "Mixed": status_counts.get("Mixed", 0),
+        "Unverifiable": status_counts.get("Unverifiable", 0),
+    }
+
+    summary_df = pd.DataFrame(
+        list(summary_data.items()),
+        columns=["Category", "Count"]
+    )
+
+    st.subheader("Verification Summary")
+    st.table(summary_df)
+
+    # Optional metric cards
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Total Claims", total_claims)
+    col2.metric("True", summary_data["True"])
+    col3.metric("False", summary_data["False"])
+    col4.metric("Unverifiable", summary_data["Unverifiable"])
+
+    col5, col6, col7, col8 = st.columns(4)
+    col5.metric("Misleading", summary_data["Misleading"])
+    col6.metric("Outdated", summary_data["Outdated"])
+    col7.metric("Opinion", summary_data["Opinion"])
+    col8.metric("Mixed", summary_data["Mixed"])
+
+    # -----------------------------
+    # Detailed table
+    # -----------------------------
+    st.subheader("Verified Claims")
 
     st.dataframe(df, use_container_width=True)
 
